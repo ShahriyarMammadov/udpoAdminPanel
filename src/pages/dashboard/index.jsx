@@ -5,7 +5,8 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, Table, theme } from "antd";
+import NewsTableComponent from "../../components/newsTable";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashBoard = () => {
@@ -14,7 +15,7 @@ const DashBoard = () => {
   } = theme.useToken();
 
   return (
-    <div>
+    <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
       <Layout>
         <Sider
           breakpoint="lg"
@@ -25,12 +26,15 @@ const DashBoard = () => {
           onCollapse={(collapsed, type) => {
             console.log(collapsed, type);
           }}
+          style={{
+            marginTop: "70px",
+          }}
         >
           <div className="demo-logo-vertical" />
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={["4"]}
+            defaultSelectedKeys={["1"]}
             items={[
               UserOutlined,
               VideoCameraOutlined,
@@ -46,13 +50,23 @@ const DashBoard = () => {
         <Layout>
           <Header
             style={{
-              padding: 0,
               background: colorBgContainer,
+              position: "fixed",
+              top: 0,
+              right: 0,
+              left: 0,
             }}
-          />
+          >
+            <div
+              className="container"
+              style={{ maxWidth: "1600px", margin: "0 auto" }}
+            >
+              <h2 style={{ margin: 0 }}>Admin Panel</h2>
+            </div>
+          </Header>
           <Content
             style={{
-              margin: "24px 16px 0",
+              margin: "70px 16px 0",
             }}
           >
             <div
@@ -62,7 +76,7 @@ const DashBoard = () => {
                 background: colorBgContainer,
               }}
             >
-              content
+              <NewsTableComponent />
             </div>
           </Content>
           <Footer
