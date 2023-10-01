@@ -1,0 +1,15 @@
+.fa-trash-can {
+    transition: all 0.5s;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.fa-pen-to-square {
+    transition: all 0.5s;
+
+    &:hover {
+        color: green;
+    }
+}

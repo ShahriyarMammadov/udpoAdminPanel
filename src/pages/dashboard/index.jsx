@@ -52,6 +52,7 @@ const DashBoard = () => {
             style={{
               background: colorBgContainer,
               position: "fixed",
+              zIndex: "150",
               top: 0,
               right: 0,
               left: 0,
