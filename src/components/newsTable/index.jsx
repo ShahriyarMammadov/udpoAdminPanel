@@ -255,6 +255,7 @@ const NewsTableComponent = () => {
 
   return (
     <>
+      <h1>Yeni xeber elave et</h1>
       <Statistic
         title="Ümumi Xəbərlərin Sayı:"
         value={data?.length}

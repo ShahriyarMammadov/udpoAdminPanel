@@ -1,12 +1,8 @@
 import "./App.css";
-import DashBoard from "./pages/dashboard";
+import Router from "./routes";
 
 function App() {
-  return (
-    <>
-      <DashBoard />
-    </>
-  );
+  return <Router />;
 }
 
 export default App;
