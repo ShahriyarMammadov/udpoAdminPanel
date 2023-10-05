@@ -1,45 +1,61 @@
 import React, { useState } from "react";
 import "./index.scss";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Breadcrumb, Dropdown, Layout, Menu, theme } from "antd";
+import { Avatar, Badge, Dropdown, Layout, Menu, theme } from "antd";
 import NewsTableComponent from "../../components/newsTable";
 import SiteConfiguration from "../siteConfiguration";
 import WriteToUs from "../writeToUs";
-import PhotoCatalog from "../photoCatalog";
+import PhotoGallery from "../photoGallery";
 import SubMenu from "antd/es/menu/SubMenu";
+import QonaqKitabi from "../qonaqKitabi";
+import Sorgu from "../sorgu";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashBoard = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
   const [menuItems, setMenuItems] = useState([
-    { key: "1", title: "Xəbərlər", icon: <UserOutlined /> },
+    {
+      key: "1",
+      title: "Xəbərlər",
+      icon: <i className="fa-regular fa-newspaper"></i>,
+    },
     {
       key: "2",
       title: "Saytın Tənzimləmələri",
-      icon: <i className="fa-solid fa-briefcase"></i>,
+      icon: <i className="fa-solid fa-screwdriver-wrench"></i>,
     },
     {
       key: "3",
       title: "Mesajlar",
-      icon: <i className="fa-solid fa-layer-group"></i>,
+      icon: <i className="fa-regular fa-envelope"></i>,
     },
     {
       key: "4",
-      title: "Foto Kataloq",
-      icon: <i className="fa-solid fa-newspaper"></i>,
+      title: "Qalereya",
+      icon: <i className="fa-regular fa-images"></i>,
       subMenu: [
         {
           key: "4-1",
-          title: "Alt Menü Öğesi 1",
-          icon: <i className="fa-solid fa-layer-group"></i>,
+          title: "Foto Qalereya Yarat",
+          icon: <i className="fa-regular fa-image"></i>,
         },
         {
           key: "4-2",
-          title: "Alt Menü Öğesi 2",
-          icon: <i className="fa-solid fa-layer-group"></i>,
+          title: "Video Qalereya Yarat",
+          icon: <i className="fa-solid fa-video"></i>,
         },
       ],
+    },
+    {
+      key: "5",
+      title: "Qonaq Kitabı",
+      icon: <i className="fa-regular fa-comments"></i>,
+    },
+    {
+      key: "6",
+      title: "Sorğu Yarat",
+      icon: <i className="fa-solid fa-square-poll-vertical"></i>,
     },
   ]);
 
@@ -59,8 +75,14 @@ const DashBoard = () => {
         return <SiteConfiguration />;
       case "3":
         return <WriteToUs />;
-      case "4":
-        return <PhotoCatalog />;
+      case "4-1":
+        return <PhotoGallery />;
+      case "4-2":
+        return <PhotoGallery />;
+      case "5":
+        return <QonaqKitabi />;
+      case "6":
+        return <Sorgu />;
 
       default:
         return null;

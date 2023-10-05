@@ -3,6 +3,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import "./index.scss";
 import { Button, Col, Input, Popconfirm, Space, Statistic, Table } from "antd";
 import Highlighter from "react-highlight-words";
+import DashBoard from "../../pages/dashboard";
 
 const NewsTableComponent = () => {
   const [loading, setLoading] = useState(true);
