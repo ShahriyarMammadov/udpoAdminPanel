@@ -11,7 +11,7 @@ import QonaqKitabi from "../qonaqKitabi";
 import Sorgu from "../sorgu";
 const { Header, Content, Footer, Sider } = Layout;
 
-const dashBoardPage = () => {
+const DashBoardPage = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
   const [menuItems, setMenuItems] = useState([
@@ -244,4 +244,4 @@ const dashBoardPage = () => {
   );
 };
 
-export default dashBoardPage;
+export default DashBoardPage;
