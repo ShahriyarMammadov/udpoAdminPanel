@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../pages/login";
-import DashBoard from "../pages/dashBoard";
 import AddNews from "../pages/addNews";
+import DashBoard from "../pages/dashBoard";
 
 const Router = () => {
   return (
