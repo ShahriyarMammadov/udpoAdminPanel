@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Button, List, Skeleton } from "antd";
+import React, { useState } from "react";
+import { List, Popconfirm, message } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 // const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
 
 const WriteToUs = () => {
@@ -88,6 +89,14 @@ const WriteToUs = () => {
   //     </div>
   //   ) : null;
 
+  // POPCONFİRM
+  const confirm = () => {
+    message.success("Silindi");
+  };
+  const cancel = () => {
+    message.error("Sİlinmədi");
+  };
+
   return (
     <div id="allMessages">
       <List
@@ -98,7 +107,22 @@ const WriteToUs = () => {
         dataSource={list}
         renderItem={(item) => (
           // loading={item.loading}
-          <List.Item actions={[<a key="list-loadmore-edit">Sil</a>]}>
+          <List.Item
+            actions={[
+              <a key="list-loadmore-edit">
+                <Popconfirm
+                  title="Mesaj Həmişəlik Silinsin?"
+                  description="Mesaj Həmişəlik Silindikdə Geri Qaytarılmayacaq."
+                  okText="Sil"
+                  cancelText="İmtina"
+                  onConfirm={confirm}
+                  onCancel={cancel}
+                >
+                  Sil
+                </Popconfirm>
+              </a>,
+            ]}
+          >
             {console.log(item)}
             {/* <Skeleton title={false}> */}
             <List.Item.Meta

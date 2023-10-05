@@ -236,7 +236,7 @@ const DashBoardPage = () => {
               textAlign: "center",
             }}
           >
-            UDPO | ADMINPANEL
+            UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
           </Footer>
         </Layout>
       </Layout>
