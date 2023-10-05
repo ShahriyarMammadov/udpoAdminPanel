@@ -3,12 +3,12 @@ import "./index.scss";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Badge, Dropdown, Layout, Menu, theme } from "antd";
 import NewsTableComponent from "../../components/newsTable";
-// import SiteConfiguration from "../siteConfiguration";
-// import WriteToUs from "../writeToUs";
-// import PhotoGallery from "../photoGallery";
-// import SubMenu from "antd/es/menu/SubMenu";
-// import QonaqKitabi from "../qonaqKitabi";
-// import Sorgu from "../sorgu";
+import SiteConfiguration from "../siteConfiguration";
+import WriteToUs from "../writeToUs";
+import PhotoGallery from "../photoGallery";
+import SubMenu from "antd/es/menu/SubMenu";
+import QonaqKitabi from "../qonaqKitabi";
+import Sorgu from "../sorgu";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashBoardPage = () => {
@@ -71,18 +71,18 @@ const DashBoardPage = () => {
     switch (selectedMenuItem) {
       case "1":
         return <NewsTableComponent />;
-      // case "2":
-      //   return <SiteConfiguration />;
-      // case "3":
-      //   return <WriteToUs />;
-      // case "4-1":
-      //   return <PhotoGallery />;
-      // case "4-2":
-      //   return <PhotoGallery />;
-      // case "5":
-      //   return <QonaqKitabi />;
-      // case "6":
-      //   return <Sorgu />;
+      case "2":
+        return <SiteConfiguration />;
+      case "3":
+        return <WriteToUs />;
+      case "4-1":
+        return <PhotoGallery />;
+      case "4-2":
+        return <PhotoGallery />;
+      case "5":
+        return <QonaqKitabi />;
+      case "6":
+        return <Sorgu />;
 
       default:
         return null;
