@@ -12,8 +12,11 @@
   "dependencies": {
     "antd": "^5.9.3",
     "axios": "^1.5.1",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-draft-wysiwyg": "^1.15.0",
     "react-highlight-words": "^0.20.0",
     "react-router-dom": "^6.16.0",
     "sass": "^1.68.0"

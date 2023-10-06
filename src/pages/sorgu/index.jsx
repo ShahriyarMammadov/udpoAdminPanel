@@ -75,23 +75,20 @@ const Sorgu = () => {
         </Form.Item>
         <hr />
         <p style={{ fontWeight: "700" }}>Cavablar</p>
-        <Form.Item label="1-ci Cavab">
+        <Form.Item label="1-ci Cavab - 10%">
           <Input placeholder="Sorğu Cavabları" />
         </Form.Item>
-        <Form.Item label="2-ci Cavab">
+        <Form.Item label="2-ci Cavab - 75%">
           <Input placeholder="Sorğu Cavabları" />
         </Form.Item>
-        <Form.Item label="3-ci Cavab">
+        <Form.Item label="3-ci Cavab - 1%">
           <Input placeholder="Sorğu Cavabları" />
         </Form.Item>
-        <Form.Item label="4-ci Cavab">
+        <Form.Item label="4-ci Cavab - 2%">
           <Input placeholder="Sorğu Cavabları" />
         </Form.Item>
-        <Form.Item label="5-ci Cavab">
+        <Form.Item label="5-ci Cavab - 12%">
           <Input placeholder="Sorğu Cavabları" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="dashed">Əlavə Et</Button>
         </Form.Item>
       </Form>
     </div>

@@ -4,6 +4,7 @@ import "./index.scss";
 import { Button, Col, Input, Popconfirm, Space, Statistic, Table } from "antd";
 import Highlighter from "react-highlight-words";
 import DashBoard from "../../pages/dashboard";
+import AddNews from "../../pages/addNews";
 
 const NewsTableComponent = () => {
   const [loading, setLoading] = useState(true);
@@ -256,7 +257,7 @@ const NewsTableComponent = () => {
 
   return (
     <>
-      <h1>Yeni xeber elave et</h1>
+      <AddNews />
       <Statistic
         title="Ümumi Xəbərlərin Sayı:"
         value={data?.length}
