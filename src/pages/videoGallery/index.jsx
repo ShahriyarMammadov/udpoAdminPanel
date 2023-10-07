@@ -1,19 +1,18 @@
 import React from "react";
-import "./index.scss";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 
-const PhotoCatalog = () => {
+const VideoCatalog = () => {
   const [form] = Form.useForm();
 
   return (
-    <div id="photoGallery">
+    <div id="VideoCatalog">
       <Form form={form} layout="vertical">
         <Form.Item
-          label="Qalereyanın adı"
-          tooltip="Bu Hissədə Qalereyanın Adı Qeyd Edilməlidir"
+          label="Video Qalereyanın adı"
+          tooltip="Bu Hissədə Video Qalereyanın Adı Qeyd Edilməlidir"
         >
-          <Input placeholder="Qalereyanın adı" />
+          <Input placeholder="Video Qalereyanın adı" />
         </Form.Item>
         <Form.Item
           label="Qalereyanın Örtük Şəkli"
@@ -26,17 +25,17 @@ const PhotoCatalog = () => {
             type="file"
             name="coverImage"
             id="coverImage"
-            accept="image/*"
+            accept="video/*"
           />
         </Form.Item>
         <Form.Item
-          label="Şəkillər"
+          label="Video"
           tooltip={{
-            title: "Qalereya Şəkilləri",
+            title: "Video",
             icon: <InfoCircleOutlined />,
           }}
         >
-          <input type="file" name="images" id="images" accept="image/*" />
+          <input type="file" name="images" id="images" accept="video/*" />
         </Form.Item>
         <Form.Item>
           <Button type="dashed">Əlavə Et</Button>
@@ -46,4 +45,4 @@ const PhotoCatalog = () => {
   );
 };
 
-export default PhotoCatalog;
+export default VideoCatalog;

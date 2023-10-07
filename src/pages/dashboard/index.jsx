@@ -9,6 +9,7 @@ import PhotoGallery from "../photoGallery";
 import SubMenu from "antd/es/menu/SubMenu";
 import QonaqKitabi from "../qonaqKitabi";
 import Sorgu from "../sorgu";
+import VideoCatalog from "../videoGallery";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashBoardPage = () => {
@@ -78,7 +79,7 @@ const DashBoardPage = () => {
       case "4-1":
         return <PhotoGallery />;
       case "4-2":
-        return <PhotoGallery />;
+        return <VideoCatalog />;
       case "5":
         return <QonaqKitabi />;
       case "6":
