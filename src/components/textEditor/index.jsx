@@ -14,13 +14,31 @@ import {
   subscript,
 } from "react-draft-wysiwyg";
 import "./index.css";
+import { useDispatch } from "react-redux";
+import { getTextEditorValue } from "../../redux/action/getStateValue";
 
 const MyEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const dispatch = useDispatch();
+
+  const convertContentToHtml = (state) => {
+    const contentState = state.getCurrentContent();
+    const html = draftToHtml(convertToRaw(contentState));
+    return html;
+  };
+
+  const handleEditorChange = (newEditorState) => {
+    const contentState = newEditorState.getCurrentContent();
+    const html = convertContentToHtml(newEditorState);
+    setEditorState(newEditorState);
+    dispatch(getTextEditorValue(html));
+  };
 
   return (
     <div className="App">
       <Editor
+        editorState={editorState}
+        onEditorStateChange={handleEditorChange}
         wrapperClassName="wrapper-class"
         toolbarClassName="toolbar-class"
         editorClassName="editor-class"
@@ -347,7 +365,7 @@ const MyEditor = () => {
         <textarea
           className="text-area"
           disabled
-          value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+          value={convertContentToHtml()}  
         />
       </div> */}
     </div>
