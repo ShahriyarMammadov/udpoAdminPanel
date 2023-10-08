@@ -1,15 +1,8 @@
 import React from "react";
-import "./index.scss";
+import { Spin } from "antd";
 
 const LoadingComponent = () => {
-  return (
-    <div class="loadingio-spinner-ripple-j65xygxwgo">
-      <div class="ldio-4iyr9m98s8i">
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  );
+  return <Spin size="large" style={{ width: "100%", padding: "40px 0" }} />;
 };
 
 export default LoadingComponent;
