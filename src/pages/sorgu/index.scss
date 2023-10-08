@@ -1,0 +1,33 @@
+#sorgu {
+    #dataList {
+        .dataHeader {
+            h4 {
+                color: grey;
+
+                span {
+                    color: black;
+                }
+            }
+
+            .dataDate {
+                display: flex;
+                gap: 70px;
+                font-weight: 700;
+
+                span {
+                    color: grey;
+                }
+            }
+        }
+
+        .dataContent {
+            display: flex;
+            gap: 10px;
+            font-weight: 600;
+
+            span {
+                color: grey;
+            }
+        }
+    }
+}
