@@ -9,7 +9,7 @@ const Sorgu = () => {
   const [form] = Form.useForm();
   const [sorguData, setSorguData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [checkActiveSorgu, setCheckActiveSorgu] = useState(Boolean);
+  // const [checkActiveSorgu, setCheckActiveSorgu] = useState(false);
 
   const getSorguAllData = async () => {
     try {
@@ -26,7 +26,6 @@ const Sorgu = () => {
 
   useEffect(() => {
     getSorguAllData();
-    setCheckActiveSorgu(sorguData.every((sorgu) => sorgu.result.length !== 0));
   }, []);
 
   // CREATE SORGU
@@ -93,7 +92,7 @@ const Sorgu = () => {
 
   return (
     <div id="sorgu">
-      <Form form={form} layout="vertical" disabled={checkActiveSorgu}>
+      <Form form={form} layout="vertical" disabled={loading}>
         <Form.Item
           label="Sorğunun Başlığı"
           tooltip="Bu Hissədə Sorğunun Adı Qeyd Edilməlidir"
@@ -198,21 +197,9 @@ const Sorgu = () => {
           />
         </Form.Item>
         <Form.Item>
-          {!checkActiveSorgu ? (
-            <Button
-              type="dashed"
-              onClick={createSorgu}
-              loading={loading}
-              disabled
-            >
-              Əlavə Et
-            </Button>
-          ) : (
-            <Button type="dashed" onClick={createSorgu} loading={loading}>
-              Hal Hazırda Aktiv Bir Sorğu Mövcud Olduğu Üçün Yenisini Yarada
-              Bilmərsiz
-            </Button>
-          )}
+          <Button type="dashed" onClick={createSorgu} loading={loading}>
+            Əlavə Et
+          </Button>
         </Form.Item>
       </Form>
 
@@ -254,15 +241,13 @@ const Sorgu = () => {
                 })}
               </div>
             </div>
-            {!checkActiveSorgu ? (
-              <Button
-                onClick={() => {
-                  resetSorgu(sorgu);
-                }}
-              >
-                Sorğunu Təkrarla
-              </Button>
-            ) : null}
+            <Button
+              onClick={() => {
+                resetSorgu(sorgu);
+              }}
+            >
+              Sorğunu Təkrarla
+            </Button>
             <hr />
           </div>
         ))
