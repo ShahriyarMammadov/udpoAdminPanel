@@ -10,9 +10,10 @@ import SubMenu from "antd/es/menu/SubMenu";
 import QonaqKitabi from "../qonaqKitabi";
 import Sorgu from "../sorgu";
 import VideoCatalog from "../videoGallery";
-const { Header, Content, Footer, Sider } = Layout;
+import FaydaliLinkler from "../faydaliLinkler";
 
 const DashBoardPage = () => {
+  const { Header, Content, Footer, Sider } = Layout;
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
   const [menuItems, setMenuItems] = useState([
@@ -23,8 +24,20 @@ const DashBoardPage = () => {
     },
     {
       key: "2",
-      title: "Saytın Tənzimləmələri",
+      title: "Sayt Tənzimləmələri",
       icon: <i className="fa-solid fa-screwdriver-wrench"></i>,
+      subMenu: [
+        {
+          key: "2-1",
+          title: "Əlaqə Vasitələri",
+          icon: <i className="fa-regular fa-image"></i>,
+        },
+        {
+          key: "2-2",
+          title: "Faydalı Linklər",
+          icon: <i className="fa-solid fa-video"></i>,
+        },
+      ],
     },
     {
       key: "3",
@@ -72,8 +85,10 @@ const DashBoardPage = () => {
     switch (selectedMenuItem) {
       case "1":
         return <NewsTableComponent />;
-      case "2":
+      case "2-1":
         return <SiteConfiguration />;
+      case "2-2":
+        return <FaydaliLinkler />;
       case "3":
         return <WriteToUs />;
       case "4-1":

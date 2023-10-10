@@ -125,6 +125,7 @@ const SiteConfiguration = () => {
               type="primary"
               onClick={editContactData}
               loading={btnLoading}
+              disabled={!fullName && !email && !phoneNumber && !location}
             >
               Dəyiş
             </Button>
