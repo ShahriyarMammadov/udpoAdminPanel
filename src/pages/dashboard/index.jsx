@@ -30,18 +30,18 @@ const DashBoardPage = () => {
         {
           key: "2-1",
           title: "Əlaqə Vasitələri",
-          icon: <i className="fa-regular fa-image"></i>,
+          icon: <i className="fa-regular fa-address-book"></i>,
         },
         {
           key: "2-2",
           title: "Faydalı Linklər",
-          icon: <i className="fa-solid fa-video"></i>,
+          icon: <i className="fa-solid fa-link"></i>,
         },
       ],
     },
     {
       key: "3",
-      title: "Mesajlar",
+      title: "Müraciətlər",
       icon: <i className="fa-regular fa-envelope"></i>,
     },
     {

@@ -173,18 +173,32 @@ const FaydaliLinkler = () => {
             dataSource={faydaliLinks}
             renderItem={(item) => (
               <List.Item>
-                <div style={{ display: "flex", gap: "100px" }}>
-                  <div style={{ minWidth: "250px", maxWidth: "280px" }}>
-                    <span>Linkin Adı: {item?.name}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "100px",
+                  }}
+                >
+                  <div
+                    style={{
+                      minWidth: "300px",
+                      maxWidth: "300px",
+                    }}
+                  >
+                    <span>{item?.name}</span>
                   </div>
-                  <div style={{ minWidth: "250px", maxWidth: "280px" }}>
-                    <span>URL: </span>
+                  <div
+                    style={{
+                      minWidth: "300px",
+                      maxWidth: "300px",
+                    }}
+                  >
                     <a href={item?.url} target={item?.target}>
                       {item?.url}
                     </a>
                   </div>
                   <div style={{ minWidth: "150px", maxWidth: "155px" }}>
-                    <span>Target: {item?.target}</span>
+                    <span>{item?.target}</span>
                   </div>
                   <div>
                     <Popconfirm
