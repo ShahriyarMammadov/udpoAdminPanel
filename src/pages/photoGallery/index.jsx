@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./index.scss";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import axios from "axios";
 
 const PhotoCatalog = () => {
@@ -9,6 +9,7 @@ const PhotoCatalog = () => {
   const [coverImage, setCoverImage] = useState("");
   const [images, setİmages] = useState([]);
   const [galleryName, setGalleryName] = useState("");
+  const [description, setDescription] = useState("");
 
   const coverImageRef = useRef(null);
   const imageRef = useRef(null);
@@ -26,16 +27,35 @@ const PhotoCatalog = () => {
 
   const addGallery = async () => {
     try {
+      console.log(images);
+      const formData = new FormData();
+      formData.append("coverImage", coverImage);
+      formData.append("name", galleryName);
+      formData.append("description", description);
+      images.forEach((image, index) => {
+        formData.append("images", image);
+      });
       const { data } = await axios.post(
-        `http://localhost:3000/gallery/getContactData`
+        `http://localhost:3000/gallery/createGallery`,
+        formData
       );
       setGalleryName("");
+      setDescription("");
       setCoverImage("");
       setİmages([]);
       coverImageRef.current.value = null;
       imageRef.current.value = null;
+      message.success(data?.message);
+
+      console.log(data);
     } catch (error) {
       console.log(error);
+      setGalleryName("");
+      setDescription("");
+      setCoverImage("");
+      setİmages([]);
+      coverImageRef.current.value = null;
+      imageRef.current.value = null;
     }
   };
 
@@ -51,7 +71,23 @@ const PhotoCatalog = () => {
           label="Qalereyanın adı"
           tooltip="Bu Hissədə Qalereyanın Adı Qeyd Edilməlidir"
         >
-          <Input placeholder="Qalereyanın adı" />
+          <Input
+            placeholder="Qalereyanın adı"
+            onChange={(e) => {
+              setGalleryName(e.target.value);
+            }}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Qalereya Haqqında Məlumat"
+          tooltip="Bu Hissədə Qalereya Haqqında Məlumat Əlavə Edilməlidir"
+        >
+          <Input
+            placeholder="Description"
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
+          />
         </Form.Item>
         <Form.Item
           label="Qalereyanın Örtük Şəkli"
@@ -87,7 +123,9 @@ const PhotoCatalog = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="dashed">Əlavə Et</Button>
+          <Button type="dashed" onClick={addGallery}>
+            Əlavə Et
+          </Button>
         </Form.Item>
       </Form>
     </div>
