@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
+import { Button, Empty, Form, Image, Input, Popconfirm, message } from "antd";
 import axios from "axios";
+import LoadingComponent from "../../components/loading";
 
 const PhotoCatalog = () => {
   const [form] = Form.useForm();
@@ -10,6 +11,27 @@ const PhotoCatalog = () => {
   const [images, setİmages] = useState([]);
   const [galleryName, setGalleryName] = useState("");
   const [description, setDescription] = useState("");
+  const [allGalleries, setAllGalleries] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [sliceCount, setSliceCount] = useState(4);
+
+  const getAllGallery = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `http://localhost:3000/gallery/getAllGallery`
+      );
+      setAllGalleries(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllGallery();
+  }, []);
 
   const coverImageRef = useRef(null);
   const imageRef = useRef(null);
@@ -27,7 +49,6 @@ const PhotoCatalog = () => {
 
   const addGallery = async () => {
     try {
-      console.log(images);
       const formData = new FormData();
       formData.append("coverImage", coverImage);
       formData.append("name", galleryName);
@@ -46,8 +67,7 @@ const PhotoCatalog = () => {
       coverImageRef.current.value = null;
       imageRef.current.value = null;
       message.success(data?.message);
-
-      console.log(data);
+      getAllGallery();
     } catch (error) {
       console.log(error);
       setGalleryName("");
@@ -59,13 +79,81 @@ const PhotoCatalog = () => {
     }
   };
 
+  const confirm = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:3000/gallery/deleteGalleryByName/${id}`
+      );
+      message.success(data?.message);
+      getAllGallery();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const cancel = () => {
+    message.error("Silinmədi");
+  };
+
   return (
     <div id="photoGallery">
-      <div className="activeGalleries">
-        <div className="cards">
-          <div className="card"></div>
+      {loading ? (
+        <LoadingComponent />
+      ) : allGalleries.length === 0 ? (
+        <Empty description={false} />
+      ) : (
+        <div className="activeGalleries">
+          <div className="cards">
+            {allGalleries?.slice(0, sliceCount)?.map((e, i) => {
+              const imageUrls = e?.images.map(
+                (image) => `http://localhost:3000/images/${image}`
+              );
+              return (
+                <div className="card">
+                  <div className="image">
+                    <Image.PreviewGroup items={imageUrls} key={i}>
+                      <Image
+                        src={`http://localhost:3000/images/${e?.coverImage}`}
+                      />
+                    </Image.PreviewGroup>
+                  </div>
+                  <div className="description">
+                    <h3>{e?.name}</h3>
+                    <p className="trash">
+                      {e?.description?.slice(0, 36)}....{" "}
+                      <Popconfirm
+                        title="Qalereya"
+                        description="Qalereya Həmişəlik Silinsin?"
+                        onConfirm={() => {
+                          confirm(e._id);
+                        }}
+                        onCancel={cancel}
+                        okText="Sil"
+                        cancelText="İmtina"
+                      >
+                        <i className="fa-regular fa-trash-can"></i>
+                      </Popconfirm>
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {allGalleries.length > 4 || allGalleries.length > sliceCount ? (
+            <Button
+              type="default"
+              style={{ display: "block", margin: "20px auto" }}
+              onClick={() => {
+                setSliceCount(sliceCount + 4);
+              }}
+            >
+              Daha Çox
+            </Button>
+          ) : null}
         </div>
-      </div>
+      )}
+
       <Form form={form} layout="vertical">
         <Form.Item
           label="Qalereyanın adı"
@@ -73,6 +161,7 @@ const PhotoCatalog = () => {
         >
           <Input
             placeholder="Qalereyanın adı"
+            value={galleryName}
             onChange={(e) => {
               setGalleryName(e.target.value);
             }}
@@ -84,6 +173,7 @@ const PhotoCatalog = () => {
         >
           <Input
             placeholder="Description"
+            value={description}
             onChange={(e) => {
               setDescription(e.target.value);
             }}

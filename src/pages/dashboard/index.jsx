@@ -54,11 +54,11 @@ const DashBoardPage = () => {
           title: "Foto Qalereya Yarat",
           icon: <i className="fa-regular fa-image"></i>,
         },
-        {
-          key: "4-2",
-          title: "Video Qalereya Yarat",
-          icon: <i className="fa-solid fa-video"></i>,
-        },
+        // {
+        //   key: "4-2",
+        //   title: "Video Qalereya Yarat",
+        //   icon: <i className="fa-solid fa-video"></i>,
+        // },
       ],
     },
     {

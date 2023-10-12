@@ -1,10 +1,21 @@
 import React from "react";
 import "./index.scss";
-import { Form } from "antd";
+import { Button, Form, Input } from "antd";
 import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+import { useRef } from "react";
 
 const AddNews = () => {
   const [form] = Form.useForm();
+  const [newsName, setNewsName] = useState("");
+  const [coverImage, setCoverImage] = useState("");
+  const coverImageRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setCoverImage(file);
+  };
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -38,21 +49,52 @@ const AddNews = () => {
     };
   }, []);
 
-  const handleGetContent = () => {
+  const handleGetContent = async () => {
     const content = tinymce.get("your-textarea-id").getContent();
     console.log("TinyMCE İçeriği:", content);
+
+    const formData = new FormData();
+    formData.append("coverImage", coverImage);
+    formData.append("name", newsName);
+
+    try {
+      const { data } = await axios.post(
+        `http://localhost:3000/gallery/getAllGallery`
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div id="addNewsPage">
-      <textarea id="your-textarea-id">Welcome to TinyMCE!</textarea>
+      <textarea id="your-textarea-id">..........</textarea>
       <hr />
       <Form form={form} layout="vertical" style={{ paddingTop: "15px" }}>
+        <Form.Item label="Xəbərin Başlığı">
+          <Input
+            placeholder="Xəbərin Başlığı"
+            onChange={(e) => [setNewsName(e.target.value)]}
+          />
+        </Form.Item>
         <Form.Item label="Xəbərin Şəkli">
-          <input type="file" accept="image/*" />
+          <input
+            type="file"
+            name="coverImage"
+            accept="image/*"
+            onChange={handleFileChange}
+            ref={coverImageRef}
+          />
         </Form.Item>
       </Form>
-      <button onClick={handleGetContent}>İçeriği Al</button>
+      <Button
+        type="dashed"
+        style={{ margin: "0 0 25px 0" }}
+        onClick={handleGetContent}
+      >
+        Xəbəri Əlavə Et
+      </Button>
     </div>
   );
 };
