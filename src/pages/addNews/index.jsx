@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useRef } from "react";
+import loadingComponent from "../../components/loading";
 
 const AddNews = () => {
   const [form] = Form.useForm();
@@ -51,15 +52,17 @@ const AddNews = () => {
 
   const handleGetContent = async () => {
     const content = tinymce.get("your-textarea-id").getContent();
-    console.log("TinyMCE İçeriği:", content);
+    console.log("content:", content);
 
     const formData = new FormData();
     formData.append("coverImage", coverImage);
+    formData.append("text", content);
     formData.append("name", newsName);
-
+    console.log(form);
     try {
       const { data } = await axios.post(
-        `http://localhost:3000/gallery/getAllGallery`
+        `http://localhost:3000/news/addNews`,
+        formData
       );
       console.log(data);
     } catch (error) {
