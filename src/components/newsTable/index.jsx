@@ -1,100 +1,143 @@
 import React, { useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import "./index.scss";
-import { Button, Col, Input, Popconfirm, Space, Statistic, Table } from "antd";
+import {
+  Button,
+  Input,
+  Popconfirm,
+  Space,
+  Statistic,
+  Table,
+  message,
+} from "antd";
 import Highlighter from "react-highlight-words";
-import DashBoard from "../../pages/dashboard";
 import AddNews from "../../pages/addNews";
+import axios from "axios";
+import { useEffect } from "react";
 
 const NewsTableComponent = () => {
   const [loading, setLoading] = useState(true);
-
-  const data = [
-    {
-      key: "1",
-      name: "Müharibədə əlil olan şəxslərə Azərbaycan Respublikası Prezidentinin təqaüdü",
-      date: "13/12/2023",
-      address: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      name: "“Maddi-mədəni irsimizin qorunması” qısametrajlı sənədli filmin təqdimatı keçirilib.",
-      date: "10/12/2023",
-      address: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      name: "“Yeniyetmə velosipedçilərin təhlükəsizliyi liə bağlı tədbirlərin təşkili ” layihəsi bitirmişdir.",
-      date: "9/12/2023",
-      address: "Sydney No. 1 Lake Park",
-    },
-    {
-      key: "4",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "5",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "6",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "7",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "8",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "9",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "10",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "11",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "12",
-      name: "QARABAĞ AZƏRBAYCANDIR!",
-      date: "13/12/2023",
-      address: "London No. 2 Lake Park",
-    },
-  ];
-
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
-  // DELETE
-  const handleDelete = async () => {
+  // ALLNEWS
+  const [data, setData] = useState([]);
+
+  const getAllNews = async () => {
     try {
+      setLoading(true);
+      const { data } = await axios.get(`http://localhost:3000/news/allNews`);
+      setData(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+  // console.log(data[0]?.text);
+
+  useEffect(() => {
+    getAllNews();
+  }, []);
+
+  // const data = [
+  //   {
+  //     key: "1",
+  //     name: "Müharibədə əlil olan şəxslərə Azərbaycan Respublikası Prezidentinin təqaüdü",
+  //     date: "13/12/2023",
+  //     address: "New York No. 1 Lake Park",
+  //   },
+  //   {
+  //     key: "2",
+  //     name: "“Maddi-mədəni irsimizin qorunması” qısametrajlı sənədli filmin təqdimatı keçirilib.",
+  //     date: "10/12/2023",
+  //     address: "London No. 1 Lake Park",
+  //   },
+  //   {
+  //     key: "3",
+  //     name: "“Yeniyetmə velosipedçilərin təhlükəsizliyi liə bağlı tədbirlərin təşkili ” layihəsi bitirmişdir.",
+  //     date: "9/12/2023",
+  //     address: "Sydney No. 1 Lake Park",
+  //   },
+  //   {
+  //     key: "4",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "5",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "6",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "7",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "8",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "9",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "10",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "11",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  //   {
+  //     key: "12",
+  //     name: "QARABAĞ AZƏRBAYCANDIR!",
+  //     date: "13/12/2023",
+  //     address: "London No. 2 Lake Park",
+  //   },
+  // ];
+
+  // DELETE
+
+  const handleDelete = async (id) => {
+    try {
+      console.log(id);
+      const { data } = await axios.delete(
+        `http://localhost:3000/news/deleteNewsById/${id}`
+      );
+      getAllNews();
+      message.success(data?.message);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const handleEdit = (record) => {
+  //   try {
+  //     console.log("Tıklanan Element Metni:", record.text);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -215,28 +258,30 @@ const NewsTableComponent = () => {
       title: "Azərbaycan Dilində Olan Xəbərlər",
       dataIndex: "name",
       key: "name",
-      width: "80%",
+      width: "78%",
       ...getColumnSearchProps("name"),
     },
     {
       title: "Tarix",
       dataIndex: "date",
       key: "date",
-      width: "10%",
+      width: "20%",
       ...getColumnSearchProps("date"),
       sorter: (a, b) => a.date.length - b.date.length,
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Redaktə",
+      title: "Sil",
       dataIndex: "",
       key: "x",
-      render: () => (
+      render: (text, record) => (
         <>
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             <Popconfirm
               title="Bu Xəbəri Silmək İstədiyinizdən Əminsiniz?"
-              onConfirm={() => handleDelete()}
+              onConfirm={() => {
+                handleDelete(record?._id);
+              }}
               okText="SİL"
               cancelText="İMTİNA"
             >
@@ -245,10 +290,13 @@ const NewsTableComponent = () => {
                 style={{ fontSize: "18px", cursor: "pointer" }}
               ></i>
             </Popconfirm>
-            <i
+            {/* <i
               className="fa-regular fa-pen-to-square"
               style={{ fontSize: "18px", cursor: "pointer" }}
-            ></i>
+              onClick={() => {
+                handleEdit(record);
+              }}
+            ></i> */}
           </div>
         </>
       ),
@@ -264,6 +312,7 @@ const NewsTableComponent = () => {
         style={{ paddingBottom: "20px" }}
       />
       <Table columns={columns} dataSource={data} />
+      {/* <div dangerouslySetInnerHTML={{ __html: data[0]?.text }}></div> */}
     </>
   );
 };

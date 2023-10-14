@@ -217,7 +217,6 @@ const DashBoardPage = () => {
                   ))}
                 </SubMenu>
               ) : (
-                // Eğer alt menü yoksa
                 <Menu.Item key={item.key} icon={item.icon}>
                   {item.title}
                 </Menu.Item>

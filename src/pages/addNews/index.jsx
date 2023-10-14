@@ -1,11 +1,10 @@
 import React from "react";
 import "./index.scss";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useRef } from "react";
-import loadingComponent from "../../components/loading";
 
 const AddNews = () => {
   const [form] = Form.useForm();
@@ -52,19 +51,17 @@ const AddNews = () => {
 
   const handleGetContent = async () => {
     const content = tinymce.get("your-textarea-id").getContent();
-    console.log("content:", content);
 
     const formData = new FormData();
     formData.append("coverImage", coverImage);
     formData.append("text", content);
     formData.append("name", newsName);
-    console.log(form);
     try {
       const { data } = await axios.post(
         `http://localhost:3000/news/addNews`,
         formData
       );
-      console.log(data);
+      message.success(data?.message);
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +69,7 @@ const AddNews = () => {
 
   return (
     <div id="addNewsPage">
-      <textarea id="your-textarea-id">..........</textarea>
+      <textarea id="your-textarea-id"></textarea>
       <hr />
       <Form form={form} layout="vertical" style={{ paddingTop: "15px" }}>
         <Form.Item label="Xəbərin Başlığı">
