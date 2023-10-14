@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import getTextEditorValueReducer from "./getStateValue";
+import userDataReducer from "./userData";
 
 export const rootReducer = combineReducers({
-  getTextEditorValueReducer,
+  userDataReducer,
 });

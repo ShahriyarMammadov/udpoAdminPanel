@@ -11,8 +11,38 @@ import QonaqKitabi from "../qonaqKitabi";
 import Sorgu from "../sorgu";
 import VideoCatalog from "../videoGallery";
 import FaydaliLinkler from "../faydaliLinkler";
+import { useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const DashBoardPage = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      if (!cookies.jwt) {
+        navigate("/");
+      } else {
+        const { data } = await axios.post(
+          "http://localhost:3000/checkAdmin",
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (!data?.status) {
+          removeCookie("jwt");
+          navigate("/");
+        }
+      }
+    };
+
+    verifyUser();
+  }, [cookies, removeCookie, navigate]);
+
   const { Header, Content, Footer, Sider } = Layout;
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
@@ -136,7 +166,10 @@ const DashBoardPage = () => {
       label: (
         <>
           <a
-            href="https://www.google.com/"
+            onClick={() => {
+              removeCookie("jwt");
+              // navigate("/");
+            }}
             style={{
               display: "flex",
               justifyContent: "space-between",
