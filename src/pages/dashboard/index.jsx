@@ -16,7 +16,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const DashboardPage = () => {
+export const Dashboardpage = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const navigate = useNavigate();
 
