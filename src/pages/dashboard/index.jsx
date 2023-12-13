@@ -16,7 +16,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const DashBoardPage = () => {
+const DashboardPage = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const navigate = useNavigate();
 
@@ -292,4 +292,4 @@ const DashBoardPage = () => {
   );
 };
 
-export default DashBoardPage;
+export default DashboardPage;

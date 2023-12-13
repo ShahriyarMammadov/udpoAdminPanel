@@ -40,8 +40,6 @@ const Login = () => {
     }
   };
 
-  console.log(userDataRedux);
-
   return (
     <div id="loginPage">
       <div className="container">
