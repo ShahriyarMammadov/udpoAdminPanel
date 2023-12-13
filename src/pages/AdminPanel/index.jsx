@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./index.scss";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Badge, Dropdown, Layout, Menu, theme } from "antd";
 import NewsTableComponent from "../../components/newsTable";
@@ -16,7 +15,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const Dashboardpage = () => {
+const AdminPanelPage = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const navigate = useNavigate();
 
@@ -291,3 +290,5 @@ export const Dashboardpage = () => {
     </div>
   );
 };
+
+export default AdminPanelPage;
