@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../pages/login";
 import AddNews from "../pages/addNews";
-import DashboardPage from "../pages/dashBoard/index.jsx";
+import { DashboardPage } from "../pages/dashBoard";
 
 const Router = () => {
   return (
