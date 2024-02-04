@@ -14,7 +14,7 @@ const Sorgu = () => {
   const getSorguAllData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/sorgu/getAllSorgu`
+        `https://udpobackend-production.up.railway.app/sorgu/getAllSorgu`
       );
 
       setSorguData(data?.data);
@@ -56,7 +56,7 @@ const Sorgu = () => {
         message.error("Zəhmət Olmasa Xanaları Tam Doldurun!");
       }
       const { data } = await axios.post(
-        `http://localhost:3000/sorgu/createSorgu`,
+        `https://udpobackend-production.up.railway.app/sorgu/createSorgu`,
         {
           name: name,
           expirationDate: expirationDate + "T00:00:00.000+00:00",

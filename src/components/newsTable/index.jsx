@@ -27,7 +27,9 @@ const NewsTableComponent = () => {
   const getAllNews = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`http://localhost:3000/news/allNews`);
+      const { data } = await axios.get(
+        `https://udpobackend-production.up.railway.app/news/allNews`
+      );
       setData(data);
       setLoading(false);
     } catch (error) {
@@ -35,7 +37,6 @@ const NewsTableComponent = () => {
       setLoading(false);
     }
   };
-  // console.log(data[0]?.text);
 
   useEffect(() => {
     getAllNews();
@@ -122,7 +123,7 @@ const NewsTableComponent = () => {
     try {
       console.log(id);
       const { data } = await axios.delete(
-        `http://localhost:3000/news/deleteNewsById/${id}`
+        `https://udpobackend-production.up.railway.app/news/deleteNewsById/${id}`
       );
       getAllNews();
       message.success(data?.message);

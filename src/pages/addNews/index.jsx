@@ -58,7 +58,7 @@ const AddNews = () => {
     formData.append("name", newsName);
     try {
       const { data } = await axios.post(
-        `http://localhost:3000/news/addNews`,
+        `https://udpobackend-production.up.railway.app/news/addNews`,
         formData
       );
       message.success(data?.message);

@@ -24,7 +24,7 @@ const FaydaliLinkler = () => {
   const getFaydaliLinks = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/faydaliLink/getFaydaliLink`
+        `https://udpobackend-production.up.railway.app/faydaliLink/getFaydaliLink`
       );
       setfaydaliLinks(data?.data);
       setLoading(false);
@@ -45,7 +45,7 @@ const FaydaliLinkler = () => {
       }
       setBtnLoading(true);
       const { data } = await axios.post(
-        `http://localhost:3000/faydaliLink/addFaydaliLink`,
+        `https://udpobackend-production.up.railway.app/faydaliLink/addFaydaliLink`,
         {
           name: name,
           url: url,
@@ -64,7 +64,7 @@ const FaydaliLinkler = () => {
   const confirm = async (id) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:3000/faydaliLink/deleteLinkById/${id}`,
+        `https://udpobackend-production.up.railway.app/faydaliLink/deleteLinkById/${id}`,
         {
           name: name,
           url: url,

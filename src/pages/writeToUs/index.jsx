@@ -18,7 +18,7 @@ const WriteToUs = () => {
   const getWriteToUsData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/writeToUs/allWriteToUs`
+        `https://udpobackend-production.up.railway.app/writeToUs/allWriteToUs`
       );
       setList(data);
       setLoading(false);

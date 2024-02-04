@@ -20,7 +20,7 @@ const PhotoCatalog = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://localhost:3000/gallery/getAllGallery`
+        `https://udpobackend-production.up.railway.app/gallery/getAllGallery`
       );
       setAllGalleries(data);
       setLoading(false);
@@ -57,7 +57,7 @@ const PhotoCatalog = () => {
         formData.append("images", image);
       });
       const { data } = await axios.post(
-        `http://localhost:3000/gallery/createGallery`,
+        `https://udpobackend-production.up.railway.app/gallery/createGallery`,
         formData
       );
       setGalleryName("");
@@ -82,7 +82,7 @@ const PhotoCatalog = () => {
   const confirm = async (id) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:3000/gallery/deleteGalleryByName/${id}`
+        `https://udpobackend-production.up.railway.app/gallery/deleteGalleryByName/${id}`
       );
       message.success(data?.message);
       getAllGallery();

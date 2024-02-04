@@ -20,7 +20,7 @@ const SiteConfiguration = () => {
   const getContactData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:3000/contact/getContactData`
+        `https://udpobackend-production.up.railway.app/contact/getContactData`
       );
       setFullName(data?.fullName);
       setLocation(data?.location);
@@ -43,7 +43,7 @@ const SiteConfiguration = () => {
     try {
       setBtnLoading(true);
       const { data } = await axios.patch(
-        `http://localhost:3000/contact/editContactData/6521b141815866067a8386be`,
+        `https://udpobackend-production.up.railway.app/contact/editContactData/6521b141815866067a8386be`,
         {
           fullName: fullName,
           location: location,

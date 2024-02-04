@@ -16,29 +16,39 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminPanelPage = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const [cookies, setCookie, removeCookie] = useCookies("jwt");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  const verifyUser = async () => {
+    try {
+      // if (!cookies.jwt) {
+      //   navigate("/");
+      // } else {
+      const { data } = await axios.post(
+        "https://udpobackend-production.up.railway.app/checkAdmin",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      setLoading(false);
+
+      console.log(data);
+      if (!data?.status) {
+        removeCookie("jwt");
+        navigate("/");
+        setLoading(false);
+      }
+      // }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      console.log(error?.response?.body);
+    }
+  };
 
   useEffect(() => {
-    const verifyUser = async () => {
-      if (!cookies.jwt) {
-        navigate("/");
-      } else {
-        const { data } = await axios.post(
-          "http://localhost:3000/checkAdmin",
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-
-        if (!data?.status) {
-          removeCookie("jwt");
-          navigate("/");
-        }
-      }
-    };
-
     verifyUser();
   }, [cookies, removeCookie, navigate]);
 
@@ -183,111 +193,115 @@ const AdminPanelPage = () => {
     },
   ];
 
-  return (
-    <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
-      <Layout>
-        <Sider
-          breakpoint="lg"
-          collapsedWidth="0"
-          onBreakpoint={(broken) => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
-          style={{
-            marginTop: "70px",
-          }}
-        >
-          <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            onClick={handleMenuClick}
-          >
-            {menuItems.map((item) =>
-              item?.subMenu ? (
-                <SubMenu key={item.key} icon={item.icon} title={item.title}>
-                  {item?.subMenu?.map((subItem) => (
-                    <Menu.Item key={subItem.key} icon={subItem.icon}>
-                      {subItem.title}
-                    </Menu.Item>
-                  ))}
-                </SubMenu>
-              ) : (
-                <Menu.Item key={item.key} icon={item.icon}>
-                  {item.title}
-                </Menu.Item>
-              )
-            )}
-          </Menu>
-        </Sider>
+  return loading ? (
+    <p>Loading</p>
+  ) : (
+    <>
+      <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
         <Layout>
-          <Header
+          <Sider
+            breakpoint="lg"
+            collapsedWidth="0"
+            onBreakpoint={(broken) => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
             style={{
-              background: colorBgContainer,
-              position: "fixed",
-              zIndex: "150",
-              top: 0,
-              right: 0,
-              left: 0,
+              marginTop: "70px",
             }}
           >
-            <div
-              className="container"
-              style={{
-                maxWidth: "1600px",
-                margin: "0 auto",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
+            <div className="demo-logo-vertical" />
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={["1"]}
+              onClick={handleMenuClick}
             >
-              <h2 style={{ margin: 0 }}>Admin Panel</h2>
-              <div>
-                <Dropdown
-                  menu={{
-                    items,
-                  }}
-                  placement="bottomRight"
-                  arrow={{
-                    pointAtCenter: true,
-                  }}
-                >
-                  <Badge count={1}>
-                    <Avatar shape="square" icon={<UserOutlined />} />
-                  </Badge>
-                </Dropdown>
-              </div>
-            </div>
-          </Header>
-
-          <Content
-            style={{
-              margin: "70px 16px 0",
-            }}
-          >
-            <div
+              {menuItems.map((item) =>
+                item?.subMenu ? (
+                  <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                    {item?.subMenu?.map((subItem) => (
+                      <Menu.Item key={subItem.key} icon={subItem.icon}>
+                        {subItem.title}
+                      </Menu.Item>
+                    ))}
+                  </SubMenu>
+                ) : (
+                  <Menu.Item key={item.key} icon={item.icon}>
+                    {item.title}
+                  </Menu.Item>
+                )
+              )}
+            </Menu>
+          </Sider>
+          <Layout>
+            <Header
               style={{
-                padding: 24,
-                minHeight: 360,
                 background: colorBgContainer,
+                position: "fixed",
+                zIndex: "150",
+                top: 0,
+                right: 0,
+                left: 0,
               }}
             >
-              {renderContent()}
-            </div>
-          </Content>
-          <Footer
-            style={{
-              textAlign: "center",
-            }}
-          >
-            UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
-          </Footer>
+              <div
+                className="container"
+                style={{
+                  maxWidth: "1600px",
+                  margin: "0 auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h2 style={{ margin: 0 }}>Admin Panel</h2>
+                <div>
+                  <Dropdown
+                    menu={{
+                      items,
+                    }}
+                    placement="bottomRight"
+                    arrow={{
+                      pointAtCenter: true,
+                    }}
+                  >
+                    <Badge count={1}>
+                      <Avatar shape="square" icon={<UserOutlined />} />
+                    </Badge>
+                  </Dropdown>
+                </div>
+              </div>
+            </Header>
+
+            <Content
+              style={{
+                margin: "70px 16px 0",
+              }}
+            >
+              <div
+                style={{
+                  padding: 24,
+                  minHeight: 360,
+                  background: colorBgContainer,
+                }}
+              >
+                {renderContent()}
+              </div>
+            </Content>
+            <Footer
+              style={{
+                textAlign: "center",
+              }}
+            >
+              UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
+            </Footer>
+          </Layout>
         </Layout>
-      </Layout>
-    </div>
+      </div>
+    </>
   );
 };
 
