@@ -106,14 +106,15 @@ const PhotoCatalog = () => {
           <div className="cards">
             {allGalleries?.slice(0, sliceCount)?.map((e, i) => {
               const imageUrls = e?.images.map(
-                (image) => `http://localhost:3000/images/${image}`
+                (image) =>
+                  `https://udpobackend-production.up.railway.app/images/${image}`
               );
               return (
                 <div className="card">
                   <div className="image">
                     <Image.PreviewGroup items={imageUrls} key={i}>
                       <Image
-                        src={`http://localhost:3000/images/${e?.coverImage}`}
+                        src={`https://udpobackend-production.up.railway.app/images/${e?.coverImage}`}
                       />
                     </Image.PreviewGroup>
                   </div>

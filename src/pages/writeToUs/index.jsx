@@ -8,12 +8,6 @@ const WriteToUs = () => {
   const [list, setList] = useState([]);
 
   // POPCONFİRM
-  const confirm = () => {
-    message.success("Silindi");
-  };
-  const cancel = () => {
-    message.error("Sİlinmədi");
-  };
 
   const getWriteToUsData = async () => {
     try {
@@ -30,6 +24,19 @@ const WriteToUs = () => {
   useEffect(() => {
     getWriteToUsData();
   }, []);
+
+  const deleteWriteToUs = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        `https://udpobackend-production.up.railway.app/writeToUs/deleteWriteTous/${id}`
+      );
+      message.success(`${data?.message}`);
+      getWriteToUsData();
+    } catch (error) {
+      console.log(error);
+      message.error("Sİlinmədi");
+    }
+  };
 
   return (
     <div id="allMessages">
@@ -49,8 +56,12 @@ const WriteToUs = () => {
                     description="Mesaj Həmişəlik Silindikdə Geri Qaytarılmayacaq."
                     okText="Sil"
                     cancelText="İmtina"
-                    onConfirm={confirm}
-                    onCancel={cancel}
+                    onConfirm={() => {
+                      deleteWriteToUs(item?._id);
+                    }}
+                    onCancel={() => {
+                      message.warning("Sİlinmədi");
+                    }}
                   >
                     Sil
                   </Popconfirm>
