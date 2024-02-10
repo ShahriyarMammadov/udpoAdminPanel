@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { List, Popconfirm, message } from "antd";
+import { List, Popconfirm, Spin, message } from "antd";
 import axios from "axios";
 import LoadingComponent from "../../components/loading";
 
 const WriteToUs = () => {
-  const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // POPCONFİRM
 
@@ -17,7 +17,7 @@ const WriteToUs = () => {
       setList(data);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
     }
   };
 
@@ -27,10 +27,12 @@ const WriteToUs = () => {
 
   const deleteWriteToUs = async (id) => {
     try {
+      setLoading(true);
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/writeToUs/deleteWriteTous/${id}`
       );
       message.success(`${data?.message}`);
+      setLoading(false);
       getWriteToUsData();
     } catch (error) {
       console.log(error);
@@ -41,7 +43,16 @@ const WriteToUs = () => {
   return (
     <div id="allMessages">
       {loading ? (
-        <LoadingComponent />
+        <Spin
+          size="large"
+          style={{
+            width: "80vw",
+            height: "80vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        />
       ) : (
         <List
           className="demo-loadmore-list"

@@ -6,6 +6,7 @@ import {
   Input,
   Popconfirm,
   Space,
+  Spin,
   Statistic,
   Table,
   message,
@@ -33,7 +34,7 @@ const NewsTableComponent = () => {
       setData(data);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
       setLoading(false);
     }
   };
@@ -43,27 +44,20 @@ const NewsTableComponent = () => {
   }, []);
 
   // DELETE
-
   const handleDelete = async (id) => {
     try {
       console.log(id);
+      setLoading(true);
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/news/deleteNewsById/${id}`
       );
       getAllNews();
+
       message.success(data?.message);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
     }
   };
-
-  // const handleEdit = (record) => {
-  //   try {
-  //     console.log("Tıklanan Element Metni:", record.text);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -232,13 +226,13 @@ const NewsTableComponent = () => {
   return (
     <>
       <AddNews />
+
       <Statistic
         title="Ümumi Xəbərlərin Sayı:"
         value={data?.length}
         style={{ paddingBottom: "20px" }}
       />
-      <Table columns={columns} dataSource={data} />
-      {/* <div dangerouslySetInnerHTML={{ __html: data[0]?.text }}></div> */}
+      <Table columns={columns} dataSource={data} loading={loading} />
     </>
   );
 };

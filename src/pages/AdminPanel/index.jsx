@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Dropdown, Layout, Menu, theme } from "antd";
+import { Avatar, Badge, Dropdown, Layout, Menu, Spin, theme } from "antd";
 import NewsTableComponent from "../../components/newsTable";
 import SiteConfiguration from "../siteConfiguration";
 import WriteToUs from "../writeToUs";
@@ -22,9 +22,6 @@ const AdminPanelPage = () => {
 
   const verifyUser = async () => {
     try {
-      // if (!cookies.jwt) {
-      //   navigate("/");
-      // } else {
       const { data } = await axios.post(
         "https://udpobackend-production.up.railway.app/checkAdmin",
         {},
@@ -40,7 +37,6 @@ const AdminPanelPage = () => {
         navigate("/");
         setLoading(false);
       }
-      // }
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -149,25 +145,33 @@ const AdminPanelPage = () => {
     {
       key: "1",
       label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
+        <div
+          onClick={() => {
+            handleMenuClick({ key: "3" });
+          }}
         >
-          1st menu item
-        </a>
+          <i
+            className="fa-regular fa-envelope"
+            style={{ paddingRight: "10px" }}
+          ></i>
+          Mesajlar
+        </div>
       ),
     },
     {
       key: "2",
       label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
+        <div
+          onClick={() => {
+            handleMenuClick({ key: "6" });
+          }}
         >
-          2nd menu item
-        </a>
+          <i
+            className="fa-solid fa-bullhorn"
+            style={{ paddingRight: "10px" }}
+          ></i>
+          Sorğular
+        </div>
       ),
     },
     {
@@ -175,10 +179,7 @@ const AdminPanelPage = () => {
       label: (
         <>
           <a
-            onClick={() => {
-              removeCookie("jwt");
-              // navigate("/");
-            }}
+            href="https://google.com"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -186,96 +187,105 @@ const AdminPanelPage = () => {
             }}
           >
             <a>Çıxış</a>
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </a>
         </>
       ),
     },
   ];
 
-  return loading ? (
-    <p>Loading</p>
-  ) : (
-    <>
-      <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+  return (
+    <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+      <Layout>
+        <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
+          onBreakpoint={(broken) => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
+          style={{
+            marginTop: "70px",
+          }}
+        >
+          <div className="demo-logo-vertical" />
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+            onClick={handleMenuClick}
+          >
+            {menuItems.map((item) =>
+              item?.subMenu ? (
+                <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                  {item?.subMenu?.map((subItem) => (
+                    <Menu.Item key={subItem.key} icon={subItem.icon}>
+                      {subItem.title}
+                    </Menu.Item>
+                  ))}
+                </SubMenu>
+              ) : (
+                <Menu.Item key={item.key} icon={item.icon}>
+                  {item.title}
+                </Menu.Item>
+              )
+            )}
+          </Menu>
+        </Sider>
         <Layout>
-          <Sider
-            breakpoint="lg"
-            collapsedWidth="0"
-            onBreakpoint={(broken) => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-            }}
+          <Header
             style={{
-              marginTop: "70px",
+              background: colorBgContainer,
+              position: "fixed",
+              zIndex: "150",
+              top: 0,
+              right: 0,
+              left: 0,
             }}
           >
-            <div className="demo-logo-vertical" />
-            <Menu
-              theme="dark"
-              mode="inline"
-              defaultSelectedKeys={["1"]}
-              onClick={handleMenuClick}
-            >
-              {menuItems.map((item) =>
-                item?.subMenu ? (
-                  <SubMenu key={item.key} icon={item.icon} title={item.title}>
-                    {item?.subMenu?.map((subItem) => (
-                      <Menu.Item key={subItem.key} icon={subItem.icon}>
-                        {subItem.title}
-                      </Menu.Item>
-                    ))}
-                  </SubMenu>
-                ) : (
-                  <Menu.Item key={item.key} icon={item.icon}>
-                    {item.title}
-                  </Menu.Item>
-                )
-              )}
-            </Menu>
-          </Sider>
-          <Layout>
-            <Header
+            <div
+              className="container"
               style={{
-                background: colorBgContainer,
-                position: "fixed",
-                zIndex: "150",
-                top: 0,
-                right: 0,
-                left: 0,
+                maxWidth: "1600px",
+                margin: "0 auto",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              <div
-                className="container"
-                style={{
-                  maxWidth: "1600px",
-                  margin: "0 auto",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <h2 style={{ margin: 0 }}>Admin Panel</h2>
-                <div>
-                  <Dropdown
-                    menu={{
-                      items,
-                    }}
-                    placement="bottomRight"
-                    arrow={{
-                      pointAtCenter: true,
-                    }}
-                  >
-                    <Badge count={1}>
-                      <Avatar shape="square" icon={<UserOutlined />} />
-                    </Badge>
-                  </Dropdown>
-                </div>
+              <h2 style={{ margin: 0 }}>Admin Panel</h2>
+              <div>
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                  placement="bottomRight"
+                  arrow={{
+                    pointAtCenter: true,
+                  }}
+                >
+                  <Badge count={1}>
+                    <Avatar shape="square" icon={<UserOutlined />} />
+                  </Badge>
+                </Dropdown>
               </div>
-            </Header>
+            </div>
+          </Header>
 
+          {loading ? (
+            <Spin
+              size="large"
+              style={{
+                width: "80vw",
+                height: "92vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+          ) : (
             <Content
               style={{
                 margin: "70px 16px 0",
@@ -291,17 +301,18 @@ const AdminPanelPage = () => {
                 {renderContent()}
               </div>
             </Content>
-            <Footer
-              style={{
-                textAlign: "center",
-              }}
-            >
-              UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
-            </Footer>
-          </Layout>
+          )}
+
+          <Footer
+            style={{
+              textAlign: "center",
+            }}
+          >
+            UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
+          </Footer>
         </Layout>
-      </div>
-    </>
+      </Layout>
+    </div>
   );
 };
 

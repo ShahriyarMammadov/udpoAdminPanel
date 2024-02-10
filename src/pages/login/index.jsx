@@ -38,6 +38,7 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       dispatch(getUserAllDataAction({ type: "REJECTED", payload: error }));
+      message.error(error?.response?.data?.message);
     }
   };
 

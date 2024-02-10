@@ -10,6 +10,7 @@ const AddNews = () => {
   const [newsName, setNewsName] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const coverImageRef = useRef(null);
   const editorRef = useRef(null);
@@ -29,6 +30,8 @@ const AddNews = () => {
         return message.error("Məlumatları Tam Daxil Edin!");
       }
 
+      setLoading(true);
+
       const { data } = await axios.post(
         `https://udpobackend-production.up.railway.app/news/addNews`,
         { name: newsName, text: description, coverImage: coverImage },
@@ -38,9 +41,11 @@ const AddNews = () => {
           },
         }
       );
+      setLoading(false);
       message.success(data?.message);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
+      setLoading(false);
     }
   };
 
@@ -100,7 +105,12 @@ const AddNews = () => {
           />
         </Form.Item>
       </Form>
-      <Button type="dashed" style={{ margin: "0 0 25px 0" }} onClick={addNews}>
+      <Button
+        type="dashed"
+        style={{ margin: "0 0 25px 0" }}
+        onClick={addNews}
+        loading={loading}
+      >
         Xəbəri Əlavə Et
       </Button>
     </div>

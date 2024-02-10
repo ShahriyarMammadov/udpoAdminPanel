@@ -1,9 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./index.scss";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Button, Empty, Form, Image, Input, Popconfirm, message } from "antd";
+import {
+  Button,
+  Empty,
+  Form,
+  Image,
+  Input,
+  Popconfirm,
+  Spin,
+  message,
+} from "antd";
 import axios from "axios";
-import LoadingComponent from "../../components/loading";
+// import LoadingComponent from "../../components/loading";
 
 const PhotoCatalog = () => {
   const [form] = Form.useForm();
@@ -49,6 +58,7 @@ const PhotoCatalog = () => {
 
   const addGallery = async () => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append("coverImage", coverImage);
       formData.append("name", galleryName);
@@ -69,7 +79,7 @@ const PhotoCatalog = () => {
       message.success(data?.message);
       getAllGallery();
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
       setGalleryName("");
       setDescription("");
       setCoverImage("");
@@ -81,6 +91,7 @@ const PhotoCatalog = () => {
 
   const confirm = async (id) => {
     try {
+      setLoading(true);
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/gallery/deleteGalleryByName/${id}`
       );
@@ -88,6 +99,7 @@ const PhotoCatalog = () => {
       getAllGallery();
     } catch (error) {
       console.log(error);
+      console.log(error?.response?.data);
     }
   };
 
@@ -98,7 +110,16 @@ const PhotoCatalog = () => {
   return (
     <div id="photoGallery">
       {loading ? (
-        <LoadingComponent />
+        <Spin
+          size="large"
+          style={{
+            width: "80vw",
+            height: "92vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        />
       ) : allGalleries.length === 0 ? (
         <Empty description={false} />
       ) : (
