@@ -8,6 +8,7 @@ import LoadingComponent from "../../components/loading";
 const SiteConfiguration = () => {
   const [form] = Form.useForm();
   const { TextArea } = Input;
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [fullName, setFullName] = useState("");
   const [location, setLocation] = useState("");
@@ -29,7 +30,7 @@ const SiteConfiguration = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.datad);
       setLoading(false);
     }
   };
@@ -41,6 +42,14 @@ const SiteConfiguration = () => {
   // EDIT CONTACT DATA
   const editContactData = async () => {
     try {
+      if (
+        fullName.length === 0 ||
+        location.length === 0 ||
+        phoneNumber.length === 0 ||
+        email.length === 0
+      ) {
+        return messageApi.info("Xanalar Boş Ola Bilməz!!!");
+      }
       setBtnLoading(true);
       const { data } = await axios.patch(
         `https://udpobackend-production.up.railway.app/contact/editContactData/6521b141815866067a8386be`,
@@ -52,7 +61,7 @@ const SiteConfiguration = () => {
         }
       );
       setBtnLoading(false);
-      message.success(data.message);
+      messageApi.success(data.message);
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +69,7 @@ const SiteConfiguration = () => {
 
   return (
     <div id="siteConfiguration">
+      {contextHolder}
       <h4>Əlaqə Vasitələri</h4>
       {loading ? (
         <LoadingComponent />

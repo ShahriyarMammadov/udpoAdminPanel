@@ -16,9 +16,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminPanelPage = () => {
-  const [cookies, setCookie, removeCookie] = useCookies("jwt");
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+
+  const { Header, Content, Footer, Sider } = Layout;
+  const [selectedMenuItem, setSelectedMenuItem] = useState("1");
+
+  useEffect(() => {
+    verifyUser();
+  }, [navigate]);
 
   const verifyUser = async () => {
     try {
@@ -31,7 +38,6 @@ const AdminPanelPage = () => {
       );
       setLoading(false);
 
-      console.log(data);
       if (!data?.status) {
         removeCookie("jwt");
         navigate("/");
@@ -39,17 +45,9 @@ const AdminPanelPage = () => {
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
       console.log(error?.response?.body);
     }
   };
-
-  useEffect(() => {
-    verifyUser();
-  }, [cookies, removeCookie, navigate]);
-
-  const { Header, Content, Footer, Sider } = Layout;
-  const [selectedMenuItem, setSelectedMenuItem] = useState("1");
 
   const [menuItems, setMenuItems] = useState([
     {
@@ -196,96 +194,96 @@ const AdminPanelPage = () => {
 
   return (
     <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
-      <Layout>
-        <Sider
-          breakpoint="lg"
-          collapsedWidth="0"
-          onBreakpoint={(broken) => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
+      {loading ? (
+        <Spin
+          size="large"
           style={{
-            marginTop: "70px",
+            width: "100vw",
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-        >
-          <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            onClick={handleMenuClick}
-          >
-            {menuItems.map((item) =>
-              item?.subMenu ? (
-                <SubMenu key={item.key} icon={item.icon} title={item.title}>
-                  {item?.subMenu?.map((subItem) => (
-                    <Menu.Item key={subItem.key} icon={subItem.icon}>
-                      {subItem.title}
-                    </Menu.Item>
-                  ))}
-                </SubMenu>
-              ) : (
-                <Menu.Item key={item.key} icon={item.icon}>
-                  {item.title}
-                </Menu.Item>
-              )
-            )}
-          </Menu>
-        </Sider>
+        />
+      ) : (
         <Layout>
-          <Header
+          <Sider
+            breakpoint="lg"
+            collapsedWidth="0"
+            onBreakpoint={(broken) => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
             style={{
-              background: colorBgContainer,
-              position: "fixed",
-              zIndex: "150",
-              top: 0,
-              right: 0,
-              left: 0,
+              marginTop: "70px",
             }}
           >
-            <div
-              className="container"
+            <div className="demo-logo-vertical" />
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={["1"]}
+              onClick={handleMenuClick}
+            >
+              {menuItems.map((item) =>
+                item?.subMenu ? (
+                  <SubMenu key={item.key} icon={item.icon} title={item.title}>
+                    {item?.subMenu?.map((subItem) => (
+                      <Menu.Item key={subItem.key} icon={subItem.icon}>
+                        {subItem.title}
+                      </Menu.Item>
+                    ))}
+                  </SubMenu>
+                ) : (
+                  <Menu.Item key={item.key} icon={item.icon}>
+                    {item.title}
+                  </Menu.Item>
+                )
+              )}
+            </Menu>
+          </Sider>
+          <Layout>
+            <Header
               style={{
-                maxWidth: "1600px",
-                margin: "0 auto",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
+                background: colorBgContainer,
+                position: "fixed",
+                zIndex: "150",
+                top: 0,
+                right: 0,
+                left: 0,
               }}
             >
-              <h2 style={{ margin: 0 }}>Admin Panel</h2>
-              <div>
-                <Dropdown
-                  menu={{
-                    items,
-                  }}
-                  placement="bottomRight"
-                  arrow={{
-                    pointAtCenter: true,
-                  }}
-                >
-                  <Badge count={1}>
-                    <Avatar shape="square" icon={<UserOutlined />} />
-                  </Badge>
-                </Dropdown>
+              <div
+                className="container"
+                style={{
+                  maxWidth: "1600px",
+                  margin: "0 auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h2 style={{ margin: 0 }}>udpo.az</h2>
+                <div>
+                  <Dropdown
+                    menu={{
+                      items,
+                    }}
+                    placement="bottomRight"
+                    arrow={{
+                      pointAtCenter: true,
+                    }}
+                  >
+                    <Badge count={0}>
+                      <Avatar shape="square" icon={<UserOutlined />} />
+                    </Badge>
+                  </Dropdown>
+                </div>
               </div>
-            </div>
-          </Header>
+            </Header>
 
-          {loading ? (
-            <Spin
-              size="large"
-              style={{
-                width: "80vw",
-                height: "92vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            />
-          ) : (
             <Content
               style={{
                 margin: "70px 16px 0",
@@ -301,17 +299,17 @@ const AdminPanelPage = () => {
                 {renderContent()}
               </div>
             </Content>
-          )}
 
-          <Footer
-            style={{
-              textAlign: "center",
-            }}
-          >
-            UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
-          </Footer>
+            <Footer
+              style={{
+                textAlign: "center",
+              }}
+            >
+              UDPO | ADMINPANEL | shahriyarmammadov16@gmail.com
+            </Footer>
+          </Layout>
         </Layout>
-      </Layout>
+      )}
     </div>
   );
 };

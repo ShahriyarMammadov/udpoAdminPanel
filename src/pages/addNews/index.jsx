@@ -15,6 +15,8 @@ const AddNews = () => {
   const coverImageRef = useRef(null);
   const editorRef = useRef(null);
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setCoverImage(file);
@@ -27,7 +29,7 @@ const AddNews = () => {
         coverImage.length === 0 ||
         description.length === 0
       ) {
-        return message.error("Məlumatları Tam Daxil Edin!");
+        return messageApi.error("Məlumatları Tam Daxil Edin!");
       }
 
       setLoading(true);
@@ -42,7 +44,7 @@ const AddNews = () => {
         }
       );
       setLoading(false);
-      message.success(data?.message);
+      messageApi.success(data?.message);
     } catch (error) {
       console.log(error?.response?.data);
       setLoading(false);
@@ -51,6 +53,7 @@ const AddNews = () => {
 
   return (
     <div id="addNewsPage">
+      {contextHolder}
       <p>Xəbər Haqqında</p>
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}

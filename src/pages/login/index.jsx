@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const userDataRedux = useSelector((state) => state.userDataReducer);
 
@@ -30,20 +31,20 @@ const Login = () => {
           message.error("You are not authorized to enter");
         }
       } else {
-        message.error(data?.message);
+        messageApi.error(data?.message);
         dispatch(
           getUserAllDataAction({ type: "REJECTED", payload: data?.message })
         );
       }
     } catch (error) {
-      console.log(error);
       dispatch(getUserAllDataAction({ type: "REJECTED", payload: error }));
-      message.error(error?.response?.data?.message);
+      messageApi.error(error?.response?.data?.message);
     }
   };
 
   return (
     <div id="loginPage">
+      {contextHolder}
       <div className="container">
         <Form
           name="normal_login"

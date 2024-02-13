@@ -10,6 +10,7 @@ const Sorgu = () => {
   const [sorguData, setSorguData] = useState([]);
   const [loading, setLoading] = useState(true);
   // const [checkActiveSorgu, setCheckActiveSorgu] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const getSorguAllData = async () => {
     try {
@@ -53,8 +54,9 @@ const Sorgu = () => {
         option4.length === 0 ||
         option5.length === 0
       ) {
-        message.error("Zəhmət Olmasa Xanaları Tam Doldurun!");
+        return messageApi.error("Zəhmət Olmasa Xanaları Tam Doldurun!");
       }
+
       const { data } = await axios.post(
         `https://udpobackend-production.up.railway.app/sorgu/createSorgu`,
         {
@@ -69,10 +71,11 @@ const Sorgu = () => {
           ],
         }
       );
-      message.success(data?.message);
+
+      messageApi.success(data?.message);
       getSorguAllData();
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
     }
   };
 
@@ -92,6 +95,7 @@ const Sorgu = () => {
 
   return (
     <div id="sorgu">
+      {contextHolder}
       <Form form={form} layout="vertical" disabled={loading}>
         <Form.Item
           label="Sorğunun Başlığı"

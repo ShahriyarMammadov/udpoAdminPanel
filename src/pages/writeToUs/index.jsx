@@ -6,6 +6,7 @@ import LoadingComponent from "../../components/loading";
 const WriteToUs = () => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [messageApi, contextHolder] = message.useMessage();
 
   // POPCONFİRM
 
@@ -31,17 +32,18 @@ const WriteToUs = () => {
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/writeToUs/deleteWriteTous/${id}`
       );
-      message.success(`${data?.message}`);
+      messageApi.success(`${data?.message}`);
       setLoading(false);
       getWriteToUsData();
     } catch (error) {
-      console.log(error);
-      message.error("Sİlinmədi");
+      console.log(error?.response?.data);
+      messageApi.error("Xəta");
     }
   };
 
   return (
     <div id="allMessages">
+      {contextHolder}
       {loading ? (
         <Spin
           size="large"

@@ -12,7 +12,6 @@ import {
   message,
 } from "antd";
 import axios from "axios";
-// import LoadingComponent from "../../components/loading";
 
 const PhotoCatalog = () => {
   const [form] = Form.useForm();
@@ -25,6 +24,8 @@ const PhotoCatalog = () => {
 
   const [sliceCount, setSliceCount] = useState(4);
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const getAllGallery = async () => {
     try {
       setLoading(true);
@@ -34,7 +35,7 @@ const PhotoCatalog = () => {
       setAllGalleries(data);
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
     }
   };
 
@@ -58,6 +59,9 @@ const PhotoCatalog = () => {
 
   const addGallery = async () => {
     try {
+      if (galleryName.length === 0 || description.length === 0) {
+        return messageApi.info("Xanaları Tam Doldurun!!!");
+      }
       setLoading(true);
       const formData = new FormData();
       formData.append("coverImage", coverImage);
@@ -76,10 +80,13 @@ const PhotoCatalog = () => {
       setİmages([]);
       coverImageRef.current.value = null;
       imageRef.current.value = null;
-      message.success(data?.message);
+      messageApi.success(data?.message);
       getAllGallery();
     } catch (error) {
-      console.log(error?.response?.data);
+      console.log(error?.response?.data?.message);
+      messageApi.warning(error?.response?.data?.message);
+      setLoading(false);
+
       setGalleryName("");
       setDescription("");
       setCoverImage("");
@@ -95,20 +102,20 @@ const PhotoCatalog = () => {
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/gallery/deleteGalleryByName/${id}`
       );
-      message.success(data?.message);
+      messageApi.success(data?.message);
       getAllGallery();
     } catch (error) {
-      console.log(error);
       console.log(error?.response?.data);
     }
   };
 
   const cancel = () => {
-    message.error("Silinmədi");
+    messageApi.error("Silinmədi");
   };
 
   return (
     <div id="photoGallery">
+      {contextHolder}
       {loading ? (
         <Spin
           size="large"
@@ -140,9 +147,15 @@ const PhotoCatalog = () => {
                     </Image.PreviewGroup>
                   </div>
                   <div className="description">
-                    <h3>{e?.name}</h3>
+                    <h3>
+                      {e?.name.length > 28
+                        ? e?.name?.slice(0, 28) + "..."
+                        : e?.name}
+                    </h3>
                     <p className="trash">
-                      {e?.description?.slice(0, 36)}....{" "}
+                      {e?.description?.length > 33
+                        ? e?.description?.slice(0, 33) + "..."
+                        : e?.description}
                       <Popconfirm
                         title="Qalereya"
                         description="Qalereya Həmişəlik Silinsin?"
@@ -162,7 +175,7 @@ const PhotoCatalog = () => {
             })}
           </div>
 
-          {allGalleries.length > 4 || allGalleries.length > sliceCount ? (
+          {allGalleries.length > 4 && allGalleries.length > sliceCount ? (
             <Button
               type="default"
               style={{ display: "block", margin: "20px auto" }}

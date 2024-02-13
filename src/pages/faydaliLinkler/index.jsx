@@ -15,6 +15,8 @@ const FaydaliLinkler = () => {
   const [loading, setLoading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [faydaliLinks, setfaydaliLinks] = useState([]);
 
   const handleChange = (value) => {
@@ -53,7 +55,7 @@ const FaydaliLinkler = () => {
         }
       );
       getFaydaliLinks();
-      message.success(data.message);
+      messageApi.success(data.message);
       setBtnLoading(false);
     } catch (error) {
       console.log(error);
@@ -63,6 +65,7 @@ const FaydaliLinkler = () => {
 
   const confirm = async (id) => {
     try {
+      setLoading(true);
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/faydaliLink/deleteLinkById/${id}`,
         {
@@ -72,17 +75,19 @@ const FaydaliLinkler = () => {
         }
       );
       getFaydaliLinks();
-      message.success(data.message);
+      messageApi.success(data?.message);
     } catch (error) {
-      console.log(error);
+      console.log(error?.response?.data);
     }
   };
   const cancel = () => {
-    message.error("Silinmədi");
+    messageApi.error("Silinmədi");
   };
 
   return (
     <div id="faydaliLinklerPage">
+      {contextHolder}
+
       {loading ? (
         <LoadingComponent />
       ) : (
