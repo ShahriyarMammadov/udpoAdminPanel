@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { List, Popconfirm, Spin, message } from "antd";
 import axios from "axios";
-import LoadingComponent from "../../components/loading";
 
 const WriteToUs = () => {
   const [list, setList] = useState([]);
@@ -105,11 +104,12 @@ const WriteToUs = () => {
                 }
                 description={
                   <>
+                    <p>{item?.text}</p>
+
                     <p>
                       Tarix:{" "}
                       {item?.createdAt?.replace("T", " - ")?.slice(0, 21)}
                     </p>
-                    <p>{item?.text}</p>
                   </>
                 }
               />

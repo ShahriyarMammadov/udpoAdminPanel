@@ -6,7 +6,6 @@ import {
   Input,
   Popconfirm,
   Space,
-  Spin,
   Statistic,
   Table,
   message,
@@ -21,6 +20,7 @@ const NewsTableComponent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const [messageApi, contextHolder] = message.useMessage();
 
   // ALLNEWS
   const [data, setData] = useState([]);
@@ -53,7 +53,7 @@ const NewsTableComponent = () => {
       );
       getAllNews();
 
-      message.success(data?.message);
+      messageApi.success(data?.message);
     } catch (error) {
       console.log(error?.response?.data);
     }
@@ -225,6 +225,8 @@ const NewsTableComponent = () => {
 
   return (
     <>
+      {contextHolder}
+
       <AddNews />
 
       <Statistic
