@@ -229,10 +229,10 @@ const NewsTableComponent = () => {
 
       <Statistic
         title="Ümumi Xəbərlərin Sayı:"
-        value={data?.totalNewsCount}
+        value={data?.length}
         style={{ paddingBottom: "20px" }}
       />
-      <Table columns={columns} dataSource={data?.allNews} loading={loading} />
+      <Table columns={columns} dataSource={data} loading={loading} />
     </>
   );
 };
