@@ -46,7 +46,6 @@ const NewsTableComponent = () => {
   // DELETE
   const handleDelete = async (id) => {
     try {
-      console.log(id);
       setLoading(true);
       const { data } = await axios.delete(
         `https://udpobackend-production.up.railway.app/news/deleteNewsById/${id}`
@@ -178,8 +177,15 @@ const NewsTableComponent = () => {
       title: "Azərbaycan Dilində Olan Xəbərlər",
       dataIndex: "name",
       key: "name",
-      width: "78%",
+      width: "60%",
       ...getColumnSearchProps("name"),
+    },
+    {
+      title: "ID",
+      dataIndex: "_id",
+      key: "_id",
+      width: "20%",
+      ...getColumnSearchProps("_id"),
     },
     {
       title: "Tarix",

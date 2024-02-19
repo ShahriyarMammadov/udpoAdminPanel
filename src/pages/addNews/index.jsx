@@ -1,21 +1,43 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./index.scss";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Avatar, Card } from "antd";
 import axios from "axios";
 import { Editor } from "@tinymce/tinymce-react";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 
 const AddNews = () => {
   const [form] = Form.useForm();
+  const { Meta } = Card;
 
   const [newsName, setNewsName] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedNews, setSelectedNews] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const coverImageRef = useRef(null);
   const editorRef = useRef(null);
 
-  const [messageApi, contextHolder] = message.useMessage();
+  const getSelectedNews = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://udpobackend-production.up.railway.app/selectedNews/getAllSelectedNews`
+      );
+      setSelectedNews(data?.data);
+    } catch (error) {
+      console.log(error, error?.response?.data);
+    }
+  };
+
+  useEffect(() => {
+    getSelectedNews();
+  }, []);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -116,6 +138,49 @@ const AddNews = () => {
       >
         Xəbəri Əlavə Et
       </Button>
+
+      <h3>Seçilmiş Xəbərlər</h3>
+      <div
+        style={{
+          marginBottom: "50px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+          flexWrap: "wrap",
+        }}
+      >
+        {selectedNews?.map((e, i) => {
+          return (
+            <Card
+              key={e?._id}
+              style={{
+                width: 300,
+              }}
+              cover={
+                <img
+                  alt={e?.name}
+                  src={`https://udpobackend-production.up.railway.app/images/${e?.coverImage}`}
+                />
+              }
+              actions={[
+                <DeleteOutlined key="delete" />,
+                <EditOutlined key="edit" />,
+                <EllipsisOutlined key="ellipsis" />,
+              ]}
+            >
+              {/* <Meta
+                avatar={
+                  <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+                }
+                title="Card title"
+                description="This is the description"
+              /> */}
+              <p>{e?.name}</p>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 };
