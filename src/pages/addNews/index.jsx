@@ -69,13 +69,11 @@ const AddNews = () => {
   };
 
   const handleDeleteSelectedNews = async (id) => {
+    console.log(`${id}`);
     try {
       setLoading(true);
       const { data } = await axios.delete(
-        `https://udpobackend-production.up.railway.app/selectedNews/removeNameFromSelectedNews`,
-        {
-          newsID: id,
-        }
+        `https://udpobackend-production.up.railway.app/selectedNews/removeNameFromSelectedNews?newsID=${id}`
       );
 
       setLoading(false);
@@ -199,31 +197,25 @@ const AddNews = () => {
                 <img
                   alt={e?.name}
                   src={`https://udpobackend-production.up.railway.app/images/${e?.coverImage}`}
-                  style={{ height: 200, objectFit: "cover" }}
+                  style={{
+                    height: 200,
+                    objectFit: "cover",
+                  }}
                 />
               }
               actions={[
                 <Popconfirm
                   title="Ana səhifədə olan seçilmiş xəbərlərdən silinsin?"
                   onConfirm={() => {
-                    handleDeleteSelectedNews(e?._id);
+                    handleDeleteSelectedNews(e?._id?.toString());
                   }}
                   okText="SİL"
                   cancelText="İMTİNA"
                 >
                   <DeleteOutlined key="delete" />,
                 </Popconfirm>,
-                // <EditOutlined key="edit" />,
-                // <EllipsisOutlined key="ellipsis" />,
               ]}
             >
-              {/* <Meta
-                avatar={
-                  <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
-                }
-                title="Card title"
-                description="This is the description"
-              /> */}
               <p>{e?._id}</p>
               <p>
                 {e?.name?.length > 150
