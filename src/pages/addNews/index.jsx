@@ -90,6 +90,11 @@ const AddNews = () => {
   const addSelectedNews = async () => {
     try {
       setLoading(true);
+
+      if (selectedNewsID?.length < 6) {
+        return messageApi.error("id daxil edilməyib!!!");
+      }
+
       const { data } = await axios.post(
         `https://udpobackend-production.up.railway.app/selectedNews/addNameToSelectedNews`,
         {
