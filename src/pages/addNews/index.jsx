@@ -1,23 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./index.scss";
-import { Button, Form, Input, message, Avatar, Card } from "antd";
+import { Button, Form, Input, message, Card, Popconfirm } from "antd";
 import axios from "axios";
 import { Editor } from "@tinymce/tinymce-react";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const AddNews = () => {
   const [form] = Form.useForm();
-  const { Meta } = Card;
 
   const [newsName, setNewsName] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedNewsID, setAddSelectedNewsID] = useState("");
   const [selectedNews, setSelectedNews] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -69,6 +64,45 @@ const AddNews = () => {
       messageApi.success(data?.message);
     } catch (error) {
       console.log(error?.response?.data);
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteSelectedNews = async (id) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.delete(
+        `https://udpobackend-production.up.railway.app/selectedNews/removeNameFromSelectedNews`,
+        {
+          newsID: id,
+        }
+      );
+
+      setLoading(false);
+
+      messageApi.success(data?.message);
+    } catch (error) {
+      console.log(error, error?.response?.data);
+      setLoading(false);
+    }
+  };
+
+  const addSelectedNews = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post(
+        `https://udpobackend-production.up.railway.app/selectedNews/addNameToSelectedNews`,
+        {
+          newsID: selectedNewsID,
+        }
+      );
+
+      messageApi.success(data?.message);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error, error?.response?.data);
+      messageApi.error(error?.response?.data?.message);
       setLoading(false);
     }
   };
@@ -161,12 +195,22 @@ const AddNews = () => {
                 <img
                   alt={e?.name}
                   src={`https://udpobackend-production.up.railway.app/images/${e?.coverImage}`}
+                  style={{ height: 200, objectFit: "cover" }}
                 />
               }
               actions={[
-                <DeleteOutlined key="delete" />,
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined key="ellipsis" />,
+                <Popconfirm
+                  title="Ana səhifədə olan seçilmiş xəbərlərdən silinsin?"
+                  onConfirm={() => {
+                    handleDeleteSelectedNews(e?._id);
+                  }}
+                  okText="SİL"
+                  cancelText="İMTİNA"
+                >
+                  <DeleteOutlined key="delete" />,
+                </Popconfirm>,
+                // <EditOutlined key="edit" />,
+                // <EllipsisOutlined key="ellipsis" />,
               ]}
             >
               {/* <Meta
@@ -176,10 +220,29 @@ const AddNews = () => {
                 title="Card title"
                 description="This is the description"
               /> */}
-              <p>{e?.name}</p>
+              <p>{e?._id}</p>
+              <p>
+                {e?.name?.length > 150
+                  ? e?.name?.slice(0, 150) + " " + "....."
+                  : e?.name}
+              </p>
             </Card>
           );
         })}
+
+        <Input
+          placeholder="Xəbərin İD-si"
+          onChange={(e) => {
+            setAddSelectedNewsID(e?.target?.value);
+          }}
+        />
+        <Button
+          type="primary"
+          onClick={() => addSelectedNews()}
+          loading={loading}
+        >
+          Əlavə Et
+        </Button>
       </div>
     </div>
   );
